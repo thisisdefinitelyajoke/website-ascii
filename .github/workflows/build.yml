@@ -13,20 +13,19 @@ jobs:
       - uses: actions/checkout@v5
       - uses: actions/checkout@v5
         with:
-          repository: keycap-archivist/website-bin
+          repository: thisisdefinitelyajoke/website-ascii-bin
           path: bin-repo
-          token: ${{ secrets.REPO_SCOPE || github.token }}
+          token: ${{ secrets.BIN_REPO_TOKEN || github.token }}
       - id: nodeversion
         run: echo "NODE=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       - name: Use Node.js ${{steps.nodeversion.outputs.NODE}}
         uses: actions/setup-node@v5
         with:
           node-version: ${{ steps.nodeversion.outputs.NODE }}
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          run_install: true
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install
       - name: lint
         run: pnpm lint
       - name: Package website

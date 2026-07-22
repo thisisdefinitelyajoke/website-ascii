@@ -15,11 +15,10 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: ${{ steps.nodeversion.outputs.NODE }}
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        id: pnpm-install
-        with:
-          run_install: true
+      - name: Install pnpm
+        run: npm install -g pnpm
+      - name: Install dependencies
+        run: pnpm install
       - name: lint
         run: pnpm lint
       - name: Package website
