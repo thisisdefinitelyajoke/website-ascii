@@ -16,7 +16,9 @@ jobs:
         with:
           node-version: ${{ steps.nodeversion.outputs.NODE }}
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: |
+          npm install -g pnpm
+          echo "$(npm config get prefix)/bin" >> $GITHUB_PATH
       - name: Install dependencies
         run: pnpm install
       - name: lint
