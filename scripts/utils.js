@@ -9,6 +9,8 @@ const catalogFile = path.join(__dirname, '..', 'src', 'db', 'catalog.json');
 const ASCII_DIR = path.join(__dirname, '..', 'src', 'db');
 
 const REPO = 'thisisdefinitelyajoke/database-ascii';
+const LOCAL_DB = path.join(__dirname, '..', '..', 'database-ascii');
+const LOCAL_DB_DB = path.join(LOCAL_DB, 'db');
 const API_REV = `https://api.github.com/repos/${REPO}/commits?path=db/catalog.json`;
 
 async function getDistantRev() {
@@ -28,34 +30,38 @@ async function checkNeedUpdate() {
   return false;
 }
 
-function run(cmd) {
-  const out = execSync(cmd, { cwd: __dirname, encoding: 'utf-8', stdio: 'pipe' });
-  return out.trim();
+function copyFilesFrom(srcDir) {
+  fssync.mkdirSync(ASCII_DIR, { recursive: true });
+  fssync.copyFileSync(path.join(srcDir, 'catalog.json'), catalogFile);
+  const files = fssync.readdirSync(srcDir).filter((f) => f.endsWith('.ascii.json'));
+  for (const file of files) {
+    fssync.copyFileSync(path.join(srcDir, file), path.join(ASCII_DIR, file));
+  }
+  return files.length;
 }
 
 async function updateDb(revision) {
+  // Try local clone first (fast for dev)
+  if (fssync.existsSync(LOCAL_DB_DB)) {
+    console.log('Copying from local database-ascii repo...');
+    const count = copyFilesFrom(LOCAL_DB_DB);
+    await fs.writeFile(revFile, revision);
+    console.log(`Copied ${count} ascii files`);
+    return;
+  }
+
+  // Fall back to GitHub clone
   const tmpDir = path.join(__dirname, '..', '.tmp-ascii');
   fssync.mkdirSync(tmpDir, { recursive: true });
 
-  console.log('Cloning repository...');
-  run(`git clone --depth 1 git@github.com:${REPO}.git ${tmpDir}`);
+  console.log('Cloning repository from GitHub...');
+  run(`git clone --depth 1 https://github.com/${REPO}.git ${tmpDir}`);
 
-  // Copy catalog.json
-  const srcCatalog = path.join(tmpDir, 'db', 'catalog.json');
-  await fs.copyFile(srcCatalog, catalogFile);
-
-  // Copy all .ascii.json files
-  const srcDb = path.join(tmpDir, 'db');
-  const files = fssync.readdirSync(srcDb).filter((f) => f.endsWith('.ascii.json'));
-  for (const file of files) {
-    await fs.copyFile(path.join(srcDb, file), path.join(ASCII_DIR, file));
-  }
-
-  // Clean up
+  const count = copyFilesFrom(path.join(tmpDir, 'db'));
   fssync.rmSync(tmpDir, { recursive: true, force: true });
 
   await fs.writeFile(revFile, revision);
-  console.log(`Downloaded ${files.length} ascii files`);
+  console.log(`Downloaded ${count} ascii files`);
 }
 
 module.exports = {
