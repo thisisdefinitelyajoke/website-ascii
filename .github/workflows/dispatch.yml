@@ -1,4 +1,4 @@
-name: Poll for database update
+name: Handle database update dispatch
 
 on:
   repository_dispatch:
