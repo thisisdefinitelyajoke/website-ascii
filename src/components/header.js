@@ -1,8 +1,7 @@
 import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { globalHistory as history } from '@reach/router';
 import * as Collapsible from '@radix-ui/react-collapsible';
 
 import Search from './search';
@@ -13,17 +12,22 @@ import cn from '../internal/twMerge';
 
 const PREFIX = '/website-ascii-bin';
 
+function pathToKeycap(pathname) {
+  if (pathname.startsWith(PREFIX)) {
+    return pathname.slice(PREFIX.length) || '/';
+  }
+  return pathname;
+}
+
 const Header = ({ siteTitle }) => {
   const isScrolled = useScrollPosition();
   const [isOpen, setIsOpen] = useState(false);
+  const [currentPath, setCurrentPath] = useState('/');
 
-  let currentPath = '/';
-  if (history.location) {
-    currentPath = history.location.pathname;
-    if (currentPath.startsWith(PREFIX)) {
-      currentPath = currentPath.slice(PREFIX.length) || '/';
-    }
-  }
+  useEffect(() => {
+    setCurrentPath(pathToKeycap(window.location.pathname));
+  }, []);
+
   const keycapUrl = `https://keycap-archivist.com${currentPath}`;
 
   const internalLinks = [
