@@ -9,9 +9,12 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
+          package-manager-cache: false
+      - name: Install pnpm
+        run: npm install --location=global pnpm
       - name: Install dependencies
-        run: npx --yes pnpm install
+        run: pnpm install
       - name: lint
-        run: npx --yes pnpm lint
+        run: pnpm lint
       - name: Package website
-        run: npx --yes pnpm package
+        run: pnpm package

@@ -13,25 +13,12 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version-file: '.nvmrc'
+          package-manager-cache: false
+      - name: Install pnpm
+        run: npm install --location=global pnpm
       - name: Install dependencies
-        run: npx --yes pnpm install
+        run: pnpm install
       - name: lint
-        run: npx --yes pnpm lint
+        run: pnpm lint
       - name: Package website
-        run: npx --yes pnpm package
-      - name: push Website
-        run: |
-          cd bin-repo
-          git config --global user.email 'sillypears[bot]@users.noreply.github.com'
-          git config --global user.name 'Keycap Asciivist Bot'
-          git checkout --orphan temp
-          rm -rf ./*
-          ls -al ../
-          mv ../public/* ./
-          mkdir -p ./.github/workflows
-          cp -ar ../build/push.yml ./.github/workflows/push.yml
-          git add .
-          git commit -m "update-website" || true
-          git branch -D master
-          git branch -m master
-          git push -f origin master || true
+        run: pnpm package
