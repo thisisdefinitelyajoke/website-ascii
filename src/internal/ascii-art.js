@@ -24,7 +24,7 @@ export async function getAsciiArt(colorwayId, makerName) {
     const data = await res.json();
     cache[key] = data;
     return data[colorwayId] || null;
-  } catch {
+  } catch (e) {
     cache[key] = {};
     return null;
   }
