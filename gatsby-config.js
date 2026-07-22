@@ -84,7 +84,7 @@ if (process.env.TARGET === 'PROD') {
 }
 
 module.exports = {
-  pathPrefix: '/database-ascii',
+  pathPrefix: '/website-ascii-bin',
   siteMetadata: {
     title: 'Keycap Asciivist',
     description: 'ASCII art gallery of keycap-archivist.com',
