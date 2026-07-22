@@ -25,7 +25,7 @@ import Layout from '../layouts/base';
 import cn from '../internal/twMerge';
 
 const Maker = (props) => {
-  const { pageContext, location } = props;
+  const { pageContext } = props;
   const { maker, makerUrl, sculpt, selfOrder } = pageContext;
 
   const seoTitle = `${maker.name} - ${sculpt.name}`;
@@ -141,7 +141,7 @@ const Maker = (props) => {
         {cwList.map((c) => (
           <li key={c.id} id={c.id} className="flex flex-col">
             <Link
-              to={`${location.pathname}${c.id}`}
+              to={`${sculpt.link}/${c.id}`}
               className={cn(
                 'block w-full overflow-hidden rounded-md bg-white shadow-md transition',
                 'hover:border-slate-400/80 hover:shadow-lg',
