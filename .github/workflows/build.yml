@@ -12,16 +12,6 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Init bin repo
-        env:
-          BIN_TOKEN: ${{ secrets.BIN_REPO_TOKEN || github.token }}
-        run: |
-          git init bin-repo
-          cd bin-repo
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git config user.name 'Keycap Archivist Bot'
-          git remote add origin https://x-access-token:${BIN_TOKEN}@github.com/thisisdefinitelyajoke/website-ascii-bin.git
-
       - id: nodeversion
         run: echo "NODE=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       - name: Use Node.js ${{steps.nodeversion.outputs.NODE}}
