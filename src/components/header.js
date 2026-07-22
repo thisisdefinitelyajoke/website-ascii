@@ -2,6 +2,7 @@ import { Link } from 'gatsby';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { globalHistory as history } from '@reach/router';
 import * as Collapsible from '@radix-ui/react-collapsible';
 
 import Search from './search';
@@ -10,9 +11,20 @@ import useScrollPosition from '../hooks/useScrollPosition';
 import ThemeSwitcher from './theme-switcher';
 import cn from '../internal/twMerge';
 
+const PREFIX = '/website-ascii-bin';
+
 const Header = ({ siteTitle }) => {
   const isScrolled = useScrollPosition();
   const [isOpen, setIsOpen] = useState(false);
+
+  let currentPath = '/';
+  if (history.location) {
+    currentPath = history.location.pathname;
+    if (currentPath.startsWith(PREFIX)) {
+      currentPath = currentPath.slice(PREFIX.length) || '/';
+    }
+  }
+  const keycapUrl = `https://keycap-archivist.com${currentPath}`;
 
   const internalLinks = [
     {
@@ -140,6 +152,15 @@ const Header = ({ siteTitle }) => {
                     </a>
                   ))}
                   <ThemeSwitcher className="-ml-[6px]" />
+                  <a
+                    href={keycapUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="View on keycap-archivist.com"
+                    className="ml-1 text-base text-slate-400 transition-colors hover:text-slate-900/100 dark:text-slate-500 dark:hover:text-white/100"
+                  >
+                    <FontAwesomeIcon icon={['fas', 'external-link-alt']} />
+                  </a>
                 </div>
               </div>
             </div>
@@ -185,6 +206,15 @@ const Header = ({ siteTitle }) => {
               </a>
             ))}
             <ThemeSwitcher className="-ml-[6px]" />
+            <a
+              href={keycapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="View on keycap-archivist.com"
+              className="text-base text-slate-400 transition-colors hover:text-slate-900/100 dark:text-slate-500 dark:hover:text-white/100"
+            >
+              <FontAwesomeIcon icon={['fas', 'external-link-alt']} />
+            </a>
           </div>
         </div>
       </nav>
