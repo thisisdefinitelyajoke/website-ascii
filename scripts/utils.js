@@ -13,6 +13,10 @@ const LOCAL_DB = path.join(__dirname, '..', '..', 'database-ascii');
 const LOCAL_DB_DB = path.join(LOCAL_DB, 'db');
 const API_REV = `https://api.github.com/repos/${REPO}/commits?path=db/catalog.json`;
 
+function run(cmd) {
+  return execSync(cmd, { cwd: __dirname, encoding: 'utf-8', stdio: 'pipe' }).trim();
+}
+
 async function getDistantRev() {
   return (await axios.get(API_REV)).data[0].sha;
 }
