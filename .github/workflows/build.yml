@@ -15,7 +15,7 @@ jobs:
           node-version-file: '.nvmrc'
           package-manager-cache: false
       - name: Install pnpm
-        run: npm install --location=global pnpm
+        run: npm install --location=global pnpm@9
       - name: Install dependencies
         run: pnpm install
       - name: lint
