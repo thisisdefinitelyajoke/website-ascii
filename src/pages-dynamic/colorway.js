@@ -43,6 +43,7 @@ const Maker = (props) => {
 
   const [wishlistContainer, setStateWishlist] = useState(defaultWishlistContainer);
   const [asciiArt, setAsciiArt] = useState(null);
+  const [fontScale, setFontScale] = useState(1);
 
   useEffect(() => {
     setStateWishlist(getWishlistContainer());
@@ -128,8 +129,38 @@ const Maker = (props) => {
             <div className="mt-1 flex shrink-0 flex-row flex-nowrap items-center"></div>
           </div>
           <div className={cn('mt-0 flex flex-col gap-8 lg:mt-12 lg:flex-row', hasAdditionalInfo ? '' : 'justify-center')}>
-            <div className={cn(hasAdditionalInfo ? 'flex basis-auto lg:basis-1/2' : 'relative w-full lg:w-1/2', 'space-y-4')}>
-              <AsciiArt art={asciiArt} className="w-full rounded-lg bg-slate-100 p-2 dark:bg-slate-800" />
+            <div className={cn(hasAdditionalInfo ? 'flex basis-auto lg:basis-1/2' : 'relative w-full lg:w-1/2')}>
+              <div className="flex w-full flex-col gap-4">
+                <div className="flex items-center justify-start gap-2">
+                  <span className="text-xs text-slate-400">Zoom:</span>
+                  <button
+                    onClick={() => setFontScale(Math.min(4, +(fontScale * 1.25).toFixed(1)))}
+                    disabled={fontScale >= 4}
+                    className={cn(
+                      'flex h-7 w-7 items-center justify-center rounded text-sm font-bold shadow',
+                      fontScale >= 4
+                        ? 'cursor-not-allowed bg-slate-200 text-slate-400 dark:bg-slate-800 dark:text-slate-600'
+                        : 'bg-white/80 text-slate-700 hover:bg-white dark:bg-slate-700/80 dark:text-slate-200 dark:hover:bg-slate-700',
+                    )}
+                  >
+                    +
+                  </button>
+                  <button
+                    onClick={() => setFontScale(Math.max(0.5, +(fontScale / 1.25).toFixed(1)))}
+                    disabled={fontScale <= 0.5}
+                    className={cn(
+                      'flex h-7 w-7 items-center justify-center rounded text-sm font-bold shadow',
+                      fontScale <= 0.5
+                        ? 'cursor-not-allowed bg-slate-200 text-slate-400 dark:bg-slate-800 dark:text-slate-600'
+                        : 'bg-white/80 text-slate-700 hover:bg-white dark:bg-slate-700/80 dark:text-slate-200 dark:hover:bg-slate-700',
+                    )}
+                  >
+                    −
+                  </button>
+                  <span className="text-xs text-slate-400">{Math.round(fontScale * 100)}%</span>
+                </div>
+                <AsciiArt art={asciiArt} className="w-full rounded-lg bg-slate-100 p-2 dark:bg-slate-800" fontScale={fontScale} />
+              </div>
               {!hasAdditionalInfo && (
                 <div className={cn('flex items-center justify-between gap-x-3 rounded-lg bg-black/80 p-3')}>
                   {/* {!colorway.name && (
