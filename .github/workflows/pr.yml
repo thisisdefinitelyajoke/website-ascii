@@ -1,20 +1,14 @@
 name: Pull Request Package
-
 on:
   pull_request:
-
 jobs:
   package:
-    name: package
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - id: nodeversion
-        run: echo "NODE=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-      - name: Use Node.js ${{steps.nodeversion.outputs.NODE}}
-        uses: actions/setup-node@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: ${{ steps.nodeversion.outputs.NODE }}
+          node-version-file: '.nvmrc'
       - name: Install dependencies
         run: npx --yes pnpm install
       - name: lint

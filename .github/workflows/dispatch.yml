@@ -17,10 +17,8 @@ jobs:
         with:
           node-version: ${{ steps.nodeversion.outputs.NODE }}
       - name: Trigger rebuild
-        env:
-          DISCORD_HOOK: ${{ secrets.DISCORD_HOOK }}
         run: |
-          git config --global user.name 'Keycap Archivist Bot'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git config --global user.name 'Keycap Asciivist Bot'
+          git config --global user.email 'sillypears[bot]@users.noreply.github.com'
           git commit --allow-empty -m "Trigger rebuild" || true
           git push -f || true
