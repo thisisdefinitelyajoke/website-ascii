@@ -4,10 +4,10 @@ import { Link } from 'gatsby';
 import { sortBy } from 'lodash';
 import React, { useEffect, useState } from 'react';
 
+import AsciiArt from '../components/ascii-art';
 import Alert from '../components/alert';
 import SubmitNewCwModal from '../components/modals/submit-new-cw';
 import SEO from '../components/seo';
-import ThumbnailImage from '../components/thumbnail-image';
 import {
   addCap,
   addTradeCap,
@@ -20,6 +20,7 @@ import {
   TradeListLimit,
   WishlistLimit,
 } from '../internal/wishlist';
+import { getMakerAsciiMap } from '../internal/ascii-art';
 import Layout from '../layouts/base';
 import cn from '../internal/twMerge';
 
@@ -30,9 +31,13 @@ const Maker = (props) => {
   const seoTitle = `${maker.name} - ${sculpt.name}`;
 
   const [wishlistContainer, setStateWishlist] = useState(defaultWishlistContainer);
+  const [asciiMap, setAsciiMap] = useState({});
   useEffect(() => {
     setStateWishlist(getWishlistContainer());
   }, []);
+  useEffect(() => {
+    getMakerAsciiMap(maker.name).then(setAsciiMap);
+  }, [maker.name]);
   const wishlist = wishlistContainer.wishlists.find((x) => x.id === wishlistContainer.activeWishlistId);
   const cwList = selfOrder === true ? sculpt.colorways : sortBy(sculpt.colorways, (x) => x.name);
   const [showModal, setShowModal] = useState(false);
@@ -45,7 +50,7 @@ const Maker = (props) => {
       {showSuccessAlert && <Alert color="green" alertMessage="Colorway Successfully Submitted" setAlert={setShowSuccessAlert} />}
       {showErrorAlert && <Alert color="red" alertMessage="Colorway Submission Failed" setAlert={setShowErrorAlert} />}
       {showExceedAlert && <Alert color="red" alertMessage="Wishlist or trade list items exceeded" setAlert={setShowExceedAlert} />}
-      <SEO title={seoTitle} img={sculpt.previewImg} />
+      <SEO title={seoTitle} />
       <div className="mt-6">
         {[
           {
@@ -143,12 +148,8 @@ const Maker = (props) => {
                 'dark:border dark:border-slate-600/50 dark:bg-slate-700 dark:text-slate-200 dark:shadow-none',
               )}
             >
-              <div className="h-[250px] border-b border-slate-200 bg-white dark:border-b-2 dark:border-slate-600">
-                <ThumbnailImage
-                  className="h-full w-full object-cover"
-                  src={`https://cdn.keycap-archivist.com/keycaps/250/${c.id}.jpg`}
-                  alt={`${maker.name} - ${sculpt.name} - ${c.name}`}
-                />
+              <div className="flex h-[250px] items-center justify-center overflow-hidden border-b border-slate-200 bg-white p-2 dark:border-b-2 dark:border-slate-600">
+                <AsciiArt art={asciiMap[c.id] || null} maxHeight="240px" />
               </div>
               <div className="flex items-center justify-between gap-x-2 p-4 font-bold">
                 <span className="truncate" title={c.name ? c.name : '(Unknown)'}>

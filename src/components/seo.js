@@ -26,6 +26,7 @@ function SEO({ description, title, img }) {
 
   const currentUrl = site.siteMetadata.siteUrl;
   const compiledImg = img && img.startsWith('/') ? `${currentUrl}${img}` : img;
+  const ogImage = compiledImg ? [{ url: compiledImg }] : undefined;
   return (
     <GatsbySeo
       title={compiledTitle}
@@ -34,7 +35,7 @@ function SEO({ description, title, img }) {
         lang: 'en_US',
         title: compiledTitle,
         description: metaDescription,
-        images: [{ url: compiledImg }],
+        images: ogImage,
         site_name: 'Keycap Archivist',
         type: 'website',
         url: location.href,
@@ -54,6 +55,7 @@ SEO.propTypes = {
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
   title: PropTypes.string.isRequired,
+  img: PropTypes.string,
 };
 
 export default SEO;

@@ -1,0 +1,50 @@
+const cache = {};
+
+function sanitize(name) {
+  return name
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9_\-.\s]+/g, '_')
+    .replace(/[\s_]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+export async function getAsciiArt(colorwayId, makerName) {
+  if (!makerName) return null;
+  const key = sanitize(makerName);
+  if (cache[key]) {
+    return cache[key][colorwayId] || null;
+  }
+  try {
+    const res = await fetch(`/ascii/${key}.ascii.json`);
+    if (!res.ok) {
+      cache[key] = {};
+      return null;
+    }
+    const data = await res.json();
+    cache[key] = data;
+    return data[colorwayId] || null;
+  } catch {
+    cache[key] = {};
+    return null;
+  }
+}
+
+export async function getMakerAsciiMap(makerName) {
+  if (!makerName) return {};
+  const key = sanitize(makerName);
+  if (cache[key]) return cache[key];
+  try {
+    const res = await fetch(`/ascii/${key}.ascii.json`);
+    if (!res.ok) {
+      cache[key] = {};
+      return cache[key];
+    }
+    const data = await res.json();
+    cache[key] = data;
+    return data;
+  } catch {
+    cache[key] = {};
+    return cache[key];
+  }
+}

@@ -1,21 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useStaticQuery, graphql, Link } from 'gatsby';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { isNil, sortBy } from 'lodash';
 import ReactCountryFlag from 'react-country-flag';
 import { getImage } from 'gatsby-plugin-image';
 
+import AsciiArt from '../components/ascii-art';
 import Layout from '../layouts/base';
 import SEO from '../components/seo';
 
 // eslint-disable-next-line
 import AClogo from '-!svg-react-loader?name=AClogo!../assets/img/svg/ac-logo.inline.svg';
-import ThumbnailImage from '../components/thumbnail-image';
+import { getMakerAsciiMap } from '../internal/ascii-art';
 import cn from '../internal/twMerge';
 
 const Maker = (props) => {
   const { pageContext } = props;
   const { maker, selfOrder } = pageContext;
+  const [asciiMap, setAsciiMap] = useState({});
+  useEffect(() => {
+    getMakerAsciiMap(maker.name).then(setAsciiMap);
+  }, [maker.name]);
 
   const LogoAndBanner = useStaticQuery(graphql`
     query LogoAndBanner {
@@ -151,8 +156,8 @@ const Maker = (props) => {
                 'dark:border dark:border-slate-600/50 dark:bg-slate-700 dark:text-slate-200 dark:shadow-none',
               )}
             >
-              <div className="h-[250px] border-b border-slate-200 bg-white dark:border-b-2 dark:border-slate-600">
-                <ThumbnailImage src={s.previewImg} className="h-full w-full object-cover" alt={`${maker.name} - ${s.name}`} />
+              <div className="flex h-[250px] items-center justify-center overflow-hidden border-b border-slate-200 bg-white p-2 dark:border-b-2 dark:border-slate-600">
+                <AsciiArt art={asciiMap[s.previewCwId] || null} maxHeight="240px" />
               </div>
               <div className="p-4 text-center font-bold">
                 <div className="text-sm">{s.name}</div>

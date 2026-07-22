@@ -23,14 +23,11 @@ jobs:
         id: pnpm-install
         with:
           run_install: true
-      - name: Update database
+      - name: Trigger rebuild
         env:
           DISCORD_HOOK: ${{ secrets.DISCORD_HOOK }}
         run: |
           git config --global user.name 'Keycap Archivist Bot'
           git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          pnpm update-db
-          git add catalog-revision.txt
-          git add src/db/catalog.json
-          git commit -m "Update catalog" || true
+          git commit --allow-empty -m "Trigger rebuild" || true
           git push -f || true

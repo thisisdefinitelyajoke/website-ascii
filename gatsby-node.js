@@ -1,9 +1,4 @@
 /* eslint-disable no-param-reassign */
-/**
- * Implement Gatsby's Node APIs in this file.
- *
- * See: https://www.gatsbyjs.org/docs/node-apis/
- */
 const slugify = require('slugify');
 const path = require('path');
 const fs = require('fs');
@@ -14,28 +9,34 @@ const db = JSON.parse(fs.readFileSync('./src/db/catalog.json'));
 
 const slug = (d) => slugify(d, { replacement: '-', remove: /[#,.:?()'"/]/g, lower: true }).toLowerCase();
 
+const ASCII_SRC = './src/db';
+const ASCII_DEST = './static/ascii';
+
+function copyAsciiFiles() {
+  if (!fs.existsSync(ASCII_SRC)) return;
+  fs.mkdirSync(ASCII_DEST, { recursive: true });
+  const files = fs.readdirSync(ASCII_SRC).filter((f) => f.endsWith('.ascii.json'));
+  for (const file of files) {
+    fs.copyFileSync(path.join(ASCII_SRC, file), path.join(ASCII_DEST, file));
+  }
+}
+
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
   const makerTpl = require.resolve('./src/pages-dynamic/maker.js');
   const cwTpl = require.resolve('./src/pages-dynamic/colorway.js');
   const sculptTpl = require.resolve('./src/pages-dynamic/sculpt.js');
 
-  /**
-   * Artisan catalog
-   */
+  // Copy ascii files to static/ for client-side loading
+  copyAsciiFiles();
+
   db.forEach((maker) => {
     maker.sculpts.forEach((element) => {
       element.link = `/maker/${slug(maker.name)}/${slug(element.name)}`;
-      const rng = Math.floor(Math.random() * element.colorways.length);
-      const f = element.colorways.find((x) => x.isCover === true);
-      if (f) {
-        element.previewImg = `https://cdn.keycap-archivist.com/keycaps/250/${f.id}.jpg`;
-      } else if (element.colorways[rng]) {
-        element.previewImg = `https://cdn.keycap-archivist.com/keycaps/250/${element.colorways[rng].id}.jpg`;
-      }
     });
     const makerLightObj = _.cloneDeep(maker);
     makerLightObj.sculpts.forEach((s) => {
+      s.previewCwId = s.colorways?.[0]?.id || null;
       delete s.colorways;
     });
     const makerUrl = `/maker/${slug(maker.name)}`;
@@ -50,7 +51,6 @@ exports.createPages = async ({ actions }) => {
       },
     });
     maker.sculpts.forEach((sculpt) => {
-      // Light maker object
       const outMaker = {
         ...maker,
       };

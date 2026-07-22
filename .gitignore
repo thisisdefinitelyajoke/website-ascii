@@ -58,6 +58,13 @@ typings/
 .cache/
 public
 
+# database ascii files (pulled from database-ascii repo during build)
+src/db/*.ascii.json
+.tmp-ascii/
+
+# built ascii artifacts
+static/ascii/
+
 # Mac files
 .DS_Store
 

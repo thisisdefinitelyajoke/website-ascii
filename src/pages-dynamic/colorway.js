@@ -5,6 +5,7 @@ import { Link } from 'gatsby';
 import React, { useEffect, useState, useMemo } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import AsciiArt from '../components/ascii-art';
 import TooltipWrapper from '../components/tooltip';
 import SEO from '../components/seo';
 import ToastWrapper from '../components/toast';
@@ -22,6 +23,7 @@ import {
   WishlistLimit,
 } from '../internal/wishlist';
 
+import { getAsciiArt } from '../internal/ascii-art';
 import Layout from '../layouts/base';
 import cn from '../internal/twMerge';
 
@@ -40,13 +42,17 @@ const Maker = (props) => {
   };
 
   const [wishlistContainer, setStateWishlist] = useState(defaultWishlistContainer);
+  const [asciiArt, setAsciiArt] = useState(null);
 
   useEffect(() => {
     setStateWishlist(getWishlistContainer());
   }, []);
 
+  useEffect(() => {
+    getAsciiArt(colorway.id, makerName).then(setAsciiArt);
+  }, [colorway.id, makerName]);
+
   const wishlist = wishlistContainer.wishlists.find((x) => x.id === wishlistContainer.activeWishlistId);
-  const cwImg = `https://cdn.keycap-archivist.com/keycaps/720/${colorway.id}.jpg`;
 
   const hasAdditionalInfo = useMemo(
     () => colorway.releaseDate || colorway.totalCount || colorway.commissioned || colorway.giveaway || colorway.photoCredit || false,
@@ -71,7 +77,7 @@ const Maker = (props) => {
             <span>Wishlist or trade list items exceeded.</span>
           </ToastWrapper>
         )}
-        <SEO title={seoTitle} img={cwImg} />
+        <SEO title={seoTitle} />
         <div>
           <div className="mt-6">
             {[
@@ -123,7 +129,7 @@ const Maker = (props) => {
           </div>
           <div className={cn('mt-0 flex flex-col gap-8 lg:mt-12 lg:flex-row', hasAdditionalInfo ? '' : 'justify-center')}>
             <div className={cn(hasAdditionalInfo ? 'flex basis-auto lg:basis-1/2' : 'relative w-full lg:w-1/2', 'space-y-4')}>
-              <img loading="lazy" className="block h-full w-full rounded-lg object-cover" alt={seoTitle} src={cwImg} />
+              <AsciiArt art={asciiArt} className="w-full rounded-lg bg-slate-100 p-2 dark:bg-slate-800" />
               {!hasAdditionalInfo && (
                 <div className={cn('flex items-center justify-between gap-x-3 rounded-lg bg-black/80 p-3')}>
                   {/* {!colorway.name && (

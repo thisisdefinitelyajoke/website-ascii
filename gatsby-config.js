@@ -21,7 +21,7 @@ const plugins = [
           }
         }
     }`,
-      resolveSiteUrl: () => 'https://keycap-archivist.com/',
+      resolveSiteUrl: () => 'https://thisisdefinitelyajoke.github.io/database-ascii/',
       serialize: ({ path }) => {
         // Forced to due this because of Github pages default behaviour
         // otherwise the server returns a 301 HTTP code.
@@ -30,7 +30,7 @@ const plugins = [
           url += '/';
         }
         return {
-          url: `https://keycap-archivist.com${url}`,
+          url: `https://thisisdefinitelyajoke.github.io/database-ascii${url}`,
           changefreq: 'daily',
           priority: 0.7,
         };
@@ -40,15 +40,15 @@ const plugins = [
   {
     resolve: 'gatsby-plugin-robots-txt',
     options: {
-      host: 'https://keycap-archivist.com/',
-      sitemap: 'https://keycap-archivist.com/sitemap.xml',
+      host: 'https://thisisdefinitelyajoke.github.io/database-ascii/',
+      sitemap: 'https://thisisdefinitelyajoke.github.io/database-ascii/sitemap.xml',
       policy: [{ userAgent: '*', allow: '/' }],
     },
   },
   {
     resolve: 'gatsby-plugin-canonical-urls',
     options: {
-      siteUrl: 'https://keycap-archivist.com/',
+      siteUrl: 'https://thisisdefinitelyajoke.github.io/database-ascii/',
     },
   },
   'gatsby-plugin-postcss',
@@ -84,12 +84,12 @@ if (process.env.TARGET === 'PROD') {
 }
 
 module.exports = {
-  pathPrefix: '/',
+  pathPrefix: '/database-ascii',
   siteMetadata: {
-    title: 'Keycap Archivist',
-    description: 'The community driven artisan mechanical keyboard keycap catalog',
+    title: 'Keycap Archivist — ASCII',
+    description: 'ASCII art gallery of artisan mechanical keyboard keycaps',
     author: '@keycap-archivist',
-    siteUrl: 'https://keycap-archivist.com/',
+    siteUrl: 'https://thisisdefinitelyajoke.github.io/database-ascii/',
     generationDate: new Date(),
   },
   plugins,
