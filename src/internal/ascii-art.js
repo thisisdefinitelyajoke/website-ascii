@@ -43,7 +43,7 @@ export async function getMakerAsciiMap(makerName) {
     const data = await res.json();
     cache[key] = data;
     return data;
-  } catch {
+  } catch (e) {
     cache[key] = {};
     return cache[key];
   }

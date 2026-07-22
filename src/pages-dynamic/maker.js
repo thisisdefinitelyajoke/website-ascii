@@ -156,7 +156,12 @@ const Maker = (props) => {
                 'dark:border dark:border-slate-600/50 dark:bg-slate-700 dark:text-slate-200 dark:shadow-none',
               )}
             >
-              <div className="flex h-[250px] items-center justify-center overflow-hidden border-b border-slate-200 bg-white p-2 dark:border-b-2 dark:border-slate-600">
+              <div
+                className={cn(
+                  "flex h-[250px] items-center justify-center overflow-hidden border-b border-slate-200 bg-white p-2",
+                  "dark:border-b-2 dark:border-slate-600",
+                )}
+              >
                 <AsciiArt art={asciiMap[s.previewCwId]} maxHeight="240px" />
               </div>
               <div className="p-4 text-center font-bold">
