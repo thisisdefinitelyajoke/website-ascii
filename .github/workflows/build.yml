@@ -10,14 +10,12 @@ jobs:
     name: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.REPO_SCOPE }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
+      - uses: actions/checkout@v5
         with:
           repository: keycap-archivist/website-bin
           path: bin-repo
-          token: ${{ secrets.REPO_SCOPE }}
+          token: ${{ secrets.REPO_SCOPE || github.token }}
       - id: nodeversion
         run: echo "NODE=$(cat .nvmrc)" >> $GITHUB_OUTPUT
       - name: Use Node.js ${{steps.nodeversion.outputs.NODE}}
