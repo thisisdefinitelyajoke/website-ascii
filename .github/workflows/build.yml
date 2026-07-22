@@ -39,6 +39,6 @@ jobs:
           cp -ar ../build/push.yml ./.github/workflows/push.yml
           git add .
           git commit -m "update-website" || true
-          git branch -D master
-          git branch -m master
-          git push -f origin master || true
+          git branch -D main 2>/dev/null || true
+          git branch -m main
+          git push -f origin main || true
