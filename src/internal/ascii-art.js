@@ -1,3 +1,5 @@
+const BASE = 'https://media.githubusercontent.com/media/thisisdefinitelyajoke/database-ascii/master/db';
+
 const cache = {};
 
 function sanitize(name) {
@@ -9,6 +11,10 @@ function sanitize(name) {
     .replace(/^_+|_+$/g, '');
 }
 
+function asciiUrl(key) {
+  return `${BASE}/${key}.ascii.json`;
+}
+
 export async function getAsciiArt(colorwayId, makerName) {
   if (!makerName) return null;
   const key = sanitize(makerName);
@@ -16,7 +22,7 @@ export async function getAsciiArt(colorwayId, makerName) {
     return cache[key][colorwayId] || null;
   }
   try {
-    const res = await fetch(`/ascii/${key}.ascii.json`);
+    const res = await fetch(asciiUrl(key));
     if (!res.ok) {
       cache[key] = {};
       return null;
@@ -35,7 +41,7 @@ export async function getMakerAsciiMap(makerName) {
   const key = sanitize(makerName);
   if (cache[key]) return cache[key];
   try {
-    const res = await fetch(`/ascii/${key}.ascii.json`);
+    const res = await fetch(asciiUrl(key));
     if (!res.ok) {
       cache[key] = {};
       return cache[key];

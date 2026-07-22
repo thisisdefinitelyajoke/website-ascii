@@ -9,26 +9,11 @@ const db = JSON.parse(fs.readFileSync('./src/db/catalog.json'));
 
 const slug = (d) => slugify(d, { replacement: '-', remove: /[#,.:?()'"/]/g, lower: true }).toLowerCase();
 
-const ASCII_SRC = './src/db';
-const ASCII_DEST = './static/ascii';
-
-function copyAsciiFiles() {
-  if (!fs.existsSync(ASCII_SRC)) return;
-  fs.mkdirSync(ASCII_DEST, { recursive: true });
-  const files = fs.readdirSync(ASCII_SRC).filter((f) => f.endsWith('.ascii.json'));
-  for (const file of files) {
-    fs.copyFileSync(path.join(ASCII_SRC, file), path.join(ASCII_DEST, file));
-  }
-}
-
 exports.createPages = async ({ actions }) => {
   const { createPage } = actions;
   const makerTpl = require.resolve('./src/pages-dynamic/maker.js');
   const cwTpl = require.resolve('./src/pages-dynamic/colorway.js');
   const sculptTpl = require.resolve('./src/pages-dynamic/sculpt.js');
-
-  // Copy ascii files to static/ for client-side loading
-  copyAsciiFiles();
 
   db.forEach((maker) => {
     maker.sculpts.forEach((element) => {
