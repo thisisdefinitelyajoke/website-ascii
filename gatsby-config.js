@@ -86,8 +86,8 @@ if (process.env.TARGET === 'PROD') {
 module.exports = {
   pathPrefix: '/database-ascii',
   siteMetadata: {
-    title: 'Keycap Archivist — ASCII',
-    description: 'ASCII art gallery of artisan mechanical keyboard keycaps',
+    title: 'Keycap Asciivist',
+    description: 'ASCII art gallery of keycap-archivist.com',
     author: '@keycap-archivist',
     siteUrl: 'https://thisisdefinitelyajoke.github.io/database-ascii/',
     generationDate: new Date(),

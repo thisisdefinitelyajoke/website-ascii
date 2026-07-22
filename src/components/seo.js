@@ -36,7 +36,7 @@ function SEO({ description, title, img }) {
         title: compiledTitle,
         description: metaDescription,
         images: ogImage,
-        site_name: 'Keycap Archivist',
+        site_name: 'Keycap Asciivist',
         type: 'website',
         url: location.href,
       }}

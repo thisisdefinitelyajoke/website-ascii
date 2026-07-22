@@ -22,7 +22,7 @@ const About = () => {
       <div className="prose prose-slate w-full py-10 dark:prose-invert lg:prose-lg">
         <h1 className="text-3xl font-bold">About</h1>
         <p>
-          <strong>Keycap Archivist</strong> is a community driven project from artisan keycap enthusiasts made for other enthusiasts. It is made in
+          <strong>Keycap Asciivist</strong> is a community driven project from artisan keycap enthusiasts made for other enthusiasts. It is made in
           collaboration with{' '}
           <a target="_blank" rel="noopener noreferrer" href="https://keycap.info/">
             keycap.info
@@ -33,7 +33,7 @@ const About = () => {
           </a>{' '}
           are dowloaded as HTML and parsed to extract the data as the format is the same on every catalog. Then those data are exposed through an open source
           repository. Once data is available, we build upon it; that&lsquo;s how
-          <strong> Keycap Archivist</strong> was born. If you want to contribute just visit the{' '}
+          <strong> Keycap Asciivist</strong> was born. If you want to contribute just visit the{' '}
           <a target="_blank" rel="noopener noreferrer" href="https://github.com/keycap-archivist/">
             Github
           </a>
