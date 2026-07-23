@@ -83,7 +83,7 @@
     "lint": "npx eslint ./src --ext js",
     "lint:fix": "npx eslint ./src --fix --ext js ",
     "build": "cross-env TARGET=PROD gatsby build",
-    "package": "cross-env TARGET=PROD gatsby build --prefix-paths && cp CNAME public/CNAME && rm -rf public/*.js.map",
+    "package": "cross-env TARGET=PROD gatsby build && cp CNAME public/CNAME && rm -rf public/*.js.map",
     "develop": "cross-env TARGET=DEV gatsby develop --host=0.0.0.0",
     "format": "prettier --write \"**/*.{js,jsx,css,md}\"",
     "start": "npm run develop",

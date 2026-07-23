@@ -21,7 +21,7 @@ const plugins = [
           }
         }
     }`,
-      resolveSiteUrl: () => 'https://thisisdefinitelyajoke.github.io/database-ascii/',
+      resolveSiteUrl: () => 'https://keycap-asciivist.com',
       serialize: ({ path }) => {
         // Forced to due this because of Github pages default behaviour
         // otherwise the server returns a 301 HTTP code.
@@ -30,7 +30,7 @@ const plugins = [
           url += '/';
         }
         return {
-          url: `https://thisisdefinitelyajoke.github.io/database-ascii${url}`,
+          url: `https://keycap-asciivist.com${url}`,
           changefreq: 'daily',
           priority: 0.7,
         };
@@ -40,15 +40,15 @@ const plugins = [
   {
     resolve: 'gatsby-plugin-robots-txt',
     options: {
-      host: 'https://thisisdefinitelyajoke.github.io/database-ascii/',
-      sitemap: 'https://thisisdefinitelyajoke.github.io/database-ascii/sitemap.xml',
+      host: 'https://keycap-asciivist.com/',
+      sitemap: 'https://keycap-asciivist.com/sitemap.xml',
       policy: [{ userAgent: '*', allow: '/' }],
     },
   },
   {
     resolve: 'gatsby-plugin-canonical-urls',
     options: {
-      siteUrl: 'https://thisisdefinitelyajoke.github.io/database-ascii/',
+      siteUrl: 'https://keycap-asciivist.com/',
     },
   },
   'gatsby-plugin-postcss',
@@ -84,12 +84,12 @@ if (process.env.TARGET === 'PROD') {
 }
 
 module.exports = {
-  pathPrefix: '/website-ascii-bin',
+  pathPrefix: '',
   siteMetadata: {
     title: 'Keycap Asciivist',
     description: 'ASCII art gallery of keycap-archivist.com',
     author: '@keycap-archivist',
-    siteUrl: 'https://thisisdefinitelyajoke.github.io/database-ascii/',
+    siteUrl: 'https://keycap-asciivist.com',
     generationDate: new Date(),
   },
   plugins,

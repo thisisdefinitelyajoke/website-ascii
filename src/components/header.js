@@ -10,12 +10,7 @@ import useScrollPosition from '../hooks/useScrollPosition';
 import ThemeSwitcher from './theme-switcher';
 import cn from '../internal/twMerge';
 
-const PREFIX = '/website-ascii-bin';
-
 function pathToKeycap(pathname) {
-  if (pathname.startsWith(PREFIX)) {
-    return pathname.slice(PREFIX.length) || '/';
-  }
   return pathname;
 }
 
