@@ -43,7 +43,7 @@ const Maker = (props) => {
 
   const [wishlistContainer, setStateWishlist] = useState(defaultWishlistContainer);
   const [asciiArt, setAsciiArt] = useState(null);
-  const [fontScale, setFontScale] = useState(1);
+  const [fontScale, setFontScale] = useState(2);
 
   useEffect(() => {
     setStateWishlist(getWishlistContainer());

@@ -14,7 +14,7 @@ const AsciiArt = ({ art, className, maxHeight, fontSize, fontScale = 1 }) => {
       className={`m-0 overflow-auto leading-[1.1] ${className || ''}`}
       style={{
         fontFamily: '"Courier New", Courier, monospace',
-        fontSize: fontSize || `clamp(${0.3 * fontScale}rem, ${0.8 * fontScale}vw, ${0.5 * fontScale}rem)`,
+        fontSize: fontSize || `clamp(${0.5 * fontScale}rem, ${0.5 * fontScale}vw, ${0.55 * fontScale}rem)`,
         lineHeight: '1.1',
         whiteSpace: 'pre',
         maxHeight: maxHeight || 'none',
