@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useStaticQuery, graphql, Link } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { isNil, sortBy } from 'lodash';
+import { sortBy } from 'lodash';
 import Layout from '../layouts/base';
 import SEO from '../components/seo';
+import AsciiArt from '../components/ascii-art';
 import { getFavoriteMakers, addFavMaker, removeFavMaker } from '../internal/favorite';
 import cn from '../internal/twMerge';
+
+const LOGOS_URL = 'https://media.githubusercontent.com/media/thisisdefinitelyajoke/database-ascii/master/db/logos.ascii.json';
 
 const IndexPage = () => {
   const data = useStaticQuery(graphql`
@@ -18,29 +20,19 @@ const IndexPage = () => {
           id
         }
       }
-      allFile(filter: { relativePath: { glob: "logos/*" } }) {
-        nodes {
-          name
-          relativePath
-          childImageSharp {
-            gatsbyImageData(layout: CONSTRAINED, placeholder: BLURRED, formats: [WEBP], width: 500)
-          }
-        }
-      }
     }
   `);
 
-  const img = data.allFile.nodes;
+  const [logos, setLogos] = useState({});
 
-  const getImg = (id) => {
-    const f = img.find((x) => x.name === id);
+  useEffect(() => {
+    fetch(LOGOS_URL)
+      .then((res) => (res.ok ? res.json() : {}))
+      .then(setLogos)
+      .catch(() => setLogos({}));
+  }, []);
 
-    if (!isNil(f)) {
-      return getImage(f);
-    }
-
-    return getImage(img.find((x) => x.name === 'nologo'));
-  };
+  const getLogo = (id) => logos[id] || logos.nologo || null;
 
   const [favoriteMakers, setFavoriteMakers] = useState([]);
 
@@ -68,13 +60,7 @@ const IndexPage = () => {
               )}
             >
               <div className="w-full border-b border-slate-200 bg-white dark:border-b-2 dark:border-slate-600">
-                <GatsbyImage
-                  image={getImg(element.pageContext.maker.id)}
-                  className="block rounded-t-md"
-                  alt={element.pageContext.maker.name}
-                  width="500"
-                  height="500"
-                />
+                <AsciiArt art={getLogo(element.pageContext.maker.id)} className="block rounded-t-md" fontSize="clamp(0.36rem, 0.5vw, 0.5rem)" />
               </div>
               <div className="text-header flex items-center justify-between gap-x-2 p-4">
                 <span className="grow text-center font-semibold max-lg:truncate lg:text-lg lg:font-bold">{element.pageContext.maker.name}</span>
